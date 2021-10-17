@@ -1,4 +1,6 @@
-import { createStore } from './createStore';
+import { createStore } from './redux/createStore';
+import { reducer } from './redux/reducer';
+
 import './styles.css';
 
 const body = document.querySelector('body');
@@ -8,22 +10,21 @@ const subBtn = document.querySelector('#sub');
 const asyncBtn = document.querySelector('#async');
 const themeBtn = document.querySelector('#theme');
 
-const store = createStore();
+// Начальный стейт
+const initialState = { count: 0 };
+
+const store = createStore(reducer, initialState);
 
 const render = (state) => {
   counter.textContent = state.count;
 };
 
-const increment = () => {};
-
-const decrement = () => {};
-
 addBtn.addEventListener('click', () => {
-  store.dispatch({ type: 'increment' });
+  store.dispatch({ type: 'INCREMENT' });
 });
 
 subBtn.addEventListener('click', () => {
-  store.dispatch({ type: 'decrement' });
+  store.dispatch({ type: 'DECREMENT' });
 });
 
 asyncBtn.addEventListener('click', () => {});

@@ -1,20 +1,16 @@
-import { reducer } from './reducer';
-
-const createStore = () => {
-  // Начальный стейт
-  const initialState = { count: 0 };
+const createStore = (reducer, initialState) => {
   // Индекс текущего стейта
   let currentState = 0;
   // Хранилище истории всех стейтов
-  const stateHistory = [initialState];
+  const stateHistory = [];
   // Обработчики изменения стейта
-  const handlersMap = new Map();
+  const subscribers = new Map();
 
   // Устанавливает новый стейт
   const setState = function (state) {
     stateHistory.push(state);
-    currentState++;
-    handlersMap.forEach((handler) => handler(state));
+    currentState = stateHistory.length - 1;
+    subscribers.forEach((subscriber) => subscriber(state));
   };
 
   // Вызывает действие
@@ -29,15 +25,17 @@ const createStore = () => {
     return stateHistory[currentState];
   };
 
-  // Подписывает handler на изменение стейта
-  const subscribe = function (handler) {
-    handlersMap.set(handler, handler);
+  // Подписывает subscriber на изменение стейта
+  const subscribe = function (subscriber) {
+    subscribers.set(subscriber, subscriber);
   };
 
-  // Отписывает handler
-  const unsubscribe = function (handler) {
-    handlersMap.delete(handler);
+  // Отписывает subscriber
+  const unsubscribe = function (subscriber) {
+    subscribers.delete(subscriber);
   };
+
+  dispatch({ type: '__INIT__', payload: initialState });
 
   return {
     dispatch,
