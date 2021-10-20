@@ -8,11 +8,11 @@ import {
 } from './redux/actionCreators';
 
 import './styles.css';
-import {
-  applyMiddleware,
-  testMiddleware,
-  testMiddleware2,
-} from './redux/applyMiddleware';
+import { applyMiddleware } from './redux/enchancers/applyMiddleware';
+import { testMiddleware } from './redux/middlewares/testMiddleware';
+import { testMiddleware2 } from './redux/middlewares/testMiddleware2';
+import { testMiddleware3 } from './redux/middlewares/testMiddleware3';
+import { testMiddleware4 } from './redux/middlewares/testMiddleware4';
 
 // DOM элементы
 const body = document.querySelector('body');
@@ -29,11 +29,17 @@ const initialState = { count: 0, isDark: false, log: '' };
 const store = createStore(
   reducer,
   initialState,
-  applyMiddleware(testMiddleware, testMiddleware2)
+  applyMiddleware(
+    testMiddleware,
+    testMiddleware2,
+    testMiddleware3,
+    testMiddleware4
+  )
 );
 
 // Рендерит данные на страницу
 const render = (state) => {
+  // console.log(state.count);
   counter.textContent = state.count;
   if (state.isDark) {
     body.classList.add('dark');
@@ -42,13 +48,8 @@ const render = (state) => {
   }
 };
 
-const logger = (state) => {
-  console.log(state.log);
-};
-
 // Подписываем render на обновление стора
-store.subscribe(render);
-store.subscribe(logger);
+const unsubscribeRender = store.subscribe(render);
 
 addBtn.addEventListener('click', () => {
   store.dispatch(increment());
@@ -67,15 +68,3 @@ themeBtn.addEventListener('click', () => {
 });
 
 store.dispatch({ type: '__INIT_APP__' });
-
-fetch('https://yandex.ru/', { mode: 'no-cors' })
-  .then((response) => {
-    console.log(response);
-    response.text();
-  })
-  .then((data) => {
-    store.dispatch(increment());
-    store.dispatch(log(data));
-  });
-
-setTimeout(() => store.unsubscribe(render), 10000);
