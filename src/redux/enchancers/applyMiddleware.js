@@ -42,16 +42,18 @@ const applyMiddleware = (...middlewares) => {
 
       // Запускает цепочку диспатчей мидлвар
       let dispatchMiddlewares;
+
       // Получаем первый диспатч в цепочке
       dispatchMiddlewares = activateMiddlewares(middlewares, store.dispatch);
-      // console.log('dispatchMiddlewares', dispatchMiddlewares);
 
-      if (typeof dispatchMiddlewares !== 'function') {
-        throw new TypeError('Полученный диспатч не является функцией');
-      } else if (!dispatchMiddlewares) {
+      // Обрабатываем ошибки
+      if (!dispatchMiddlewares) {
         throw new Error('Не удалось получить диспатч');
+      } else if (typeof dispatchMiddlewares !== 'function') {
+        throw new TypeError('Полученный диспатч не является функцией');
       }
 
+      // Возвращаем store с модифицированным dispatch
       return {
         ...store,
         dispatch: dispatchMiddlewares,

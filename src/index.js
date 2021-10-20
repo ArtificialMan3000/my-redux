@@ -26,16 +26,14 @@ const themeBtn = document.querySelector('#theme');
 const initialState = { count: 0, isDark: false, log: '' };
 
 // Создаём стор
-const store = createStore(
-  reducer,
-  initialState,
+const store = createStore(reducer, initialState, [
   applyMiddleware(
     testMiddleware,
     testMiddleware2,
     testMiddleware3,
     testMiddleware4
-  )
-);
+  ),
+]);
 
 // Рендерит данные на страницу
 const render = (state) => {

@@ -1,4 +1,4 @@
-const createStore = (reducer, initialState, enchancer) => {
+const createStore = (reducer, initialState, enchancers = []) => {
   const state = reducer(initialState, '__INIT__');
   // Индекс текущего стейта
   let currentStateIdx = 0;
@@ -36,9 +36,15 @@ const createStore = (reducer, initialState, enchancer) => {
     };
   };
 
-  // Вызываем энчансер
-  if (enchancer) {
-    return enchancer(createStore)(reducer, initialState);
+  // Вызываем энчансеры
+  if (enchancers.length > 0) {
+    let enchancedCreateStore = createStore;
+    for (let enchancer of enchancers) {
+      enchancedCreateStore = enchancer(enchancedCreateStore);
+    }
+
+    // Возвращаем createStore, модифицированный энчансерами
+    return enchancedCreateStore(reducer, initialState);
   }
 
   return {
