@@ -4,7 +4,7 @@ import { increment } from '../actionCreators';
 const applyMiddleware = (...middlewares) => {
   return (createStore) => {
     // если не переданы мидлвары возвращаем оригинальный createStore
-    if (!middlewares && middlewares.length === 0) {
+    if (!middlewares || middlewares.length === 0) {
       return createStore;
     }
     return (reducer, initialState) => {
