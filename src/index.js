@@ -1,18 +1,12 @@
 import { createStore } from './redux/createStore';
 import { reducer } from './redux/reducer';
-import {
-  increment,
-  decrement,
-  toggle_theme,
-  log,
-} from './redux/actionCreators';
+import { increment, decrement, toggle_theme } from './redux/actionCreators';
 
 import './styles.css';
 import { applyMiddleware } from './redux/enchancers/applyMiddleware';
 import { testMiddleware } from './redux/middlewares/testMiddleware';
 import { testMiddleware2 } from './redux/middlewares/testMiddleware2';
-import { testMiddleware3 } from './redux/middlewares/testMiddleware3';
-import { testMiddleware4 } from './redux/middlewares/testMiddleware4';
+import { stateHistory } from './redux/enchancers/stateHistory';
 
 // DOM элементы
 const body = document.querySelector('body');
@@ -23,15 +17,12 @@ const asyncBtn = document.querySelector('#async');
 const themeBtn = document.querySelector('#theme');
 
 // Начальный стейт
-const initialState = { count: 0, isDark: false, log: '' };
+const initialState = { count: 0, isDark: false };
 
 // Создаём стор
 const store = createStore(reducer, initialState, [
-  applyMiddleware(),
-  // testMiddleware,
-  // testMiddleware2,
-  // testMiddleware3,
-  // testMiddleware4
+  stateHistory,
+  applyMiddleware(testMiddleware, testMiddleware2),
 ]);
 
 // Рендерит данные на страницу

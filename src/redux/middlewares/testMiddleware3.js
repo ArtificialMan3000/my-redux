@@ -4,5 +4,5 @@ export const testMiddleware3 =
   (action) => {
     console.log('middleware3');
 
-    // next(action);
+    next(action);
   };

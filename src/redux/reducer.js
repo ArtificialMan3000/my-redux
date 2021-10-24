@@ -1,10 +1,4 @@
-import {
-  INCREMENT,
-  DECREMENT,
-  TOGGLE_THEME,
-  MIDDLEWARE_LOG,
-  LOG,
-} from './actionTypes';
+import { INCREMENT, DECREMENT, TOGGLE_THEME } from './actionTypes';
 
 const reducer = (state, { type, payload }) => {
   switch (type) {
@@ -18,14 +12,6 @@ const reducer = (state, { type, payload }) => {
     }
     case TOGGLE_THEME: {
       state = { ...state, isDark: !state.isDark };
-      return state;
-    }
-    case MIDDLEWARE_LOG: {
-      state = { ...state, log: payload };
-      return state;
-    }
-    case LOG: {
-      state = { ...state, log: payload };
       return state;
     }
     default: {

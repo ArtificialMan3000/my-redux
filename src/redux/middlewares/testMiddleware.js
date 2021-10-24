@@ -3,6 +3,5 @@ export const testMiddleware =
   (next) =>
   (action) => {
     console.log('middleware');
-    console.log(getState());
     next(action);
   };
